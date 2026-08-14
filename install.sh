@@ -52,7 +52,7 @@ ok "Termux packages installed"
 
 # ── Step 2: Create Debian proot environment ────────────────────────────────────
 info "Setting up Debian proot environment..."
-if ! proot-distro list | grep -qE '^[[:space:]]*\* debian$'; then
+if [ ! -d "$PREFIX/var/lib/proot-distro/installed-rootfs/debian" ]; then
     info "Installing Debian (this takes a minute)..."
     proot-distro install debian
 fi
@@ -137,7 +137,7 @@ proot-distro login debian --shared-tmp -- bash -c '
     if [ -z "$ZCODE_BIN" ]; then
         echo "ERROR: ZCode binary not found."
         echo "Searched: /usr/bin/zcode /opt/ZCode/zcode /usr/lib/zcode/zcode"
-        echo "Try: dpkg -L zcode | grep -E "bin/zcode$""
+        echo "Try: dpkg -L zcode | grep -E \"bin/zcode\$\""
         exit 1
     fi
 

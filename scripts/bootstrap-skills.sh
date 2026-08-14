@@ -333,10 +333,13 @@ echo "  [OK] agent.json written"
 # ── 6. Pre-populate workspace with mobile dev context ─────────────────────────
 mkdir -p "$ZCODE_DATA_DIR/workspace"
 
-cat > "$ZCODE_DATA_DIR/workspace/.zcode-context.json" << 'CTX_EOF'
+# Compute timestamp outside the heredoc — single-quoted heredoc would not expand
+# $() and would write the literal command into the JSON, producing invalid data.
+DETECTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo 'unknown')"
+cat > "$ZCODE_DATA_DIR/workspace/.zcode-context.json" << CTX_EOF
 {
     "platform": "android-termux",
-    "detectedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo 'unknown')",
+    "detectedAt": "${DETECTED_AT}",
     "capabilities": {
         "shell": true,
         "filesystem": true,

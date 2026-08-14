@@ -50,7 +50,9 @@ detect_device() {
     fi
     
     # Is Debian proot already set up?
-    if proot-distro list 2>/dev/null | grep -q "debian.*installed"; then
+    # Prefer directory test — `proot-distro list` output format varies across versions
+    # and busybox grep -E may not support POSIX character classes.
+    if [ -d "$PREFIX/var/lib/proot-distro/installed-rootfs/debian" ]; then
         DEBIAN_PROOT_READY=true
     else
         DEBIAN_PROOT_READY=false
