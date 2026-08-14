@@ -72,11 +72,11 @@ info "Copying .deb into Debian proot..."
 # proot-distro maps Termux /tmp to the guest, but to be safe we copy explicitly
 proot-distro login debian -- cp "$DEB_FILE" /tmp/zcode.deb 2>/dev/null || {
     # Fallback: use proot-distro's bind mount path
-    cp "$DEB_FILE" "$HOME/../usr/var/lib/proot-distro/installed-rootfs/debian/tmp/zcode.deb" 2>/dev/null || true
+    cp "$DEB_FILE" "$PREFIX/var/lib/proot-distro/installed-rootfs/debian/tmp/zcode.deb" 2>/dev/null || true
 }
 
 info "Installing ZCode .deb + Electron dependencies in Debian proot..."
-proot-distro login debian -- bash -c '
+{ rc=0; proot-distro login debian -- bash -c '
     set -e
     # Install the .deb (ignore dep errors first pass)
     dpkg -i /tmp/zcode.deb 2>/dev/null || true
@@ -93,12 +93,19 @@ proot-distro login debian -- bash -c '
         libxcb-dri3-0 libxshmfence1 fonts-liberation 2>/dev/null || true
 
     # Verify install
-    if dpkg -l | grep -q "^ii.*zcode"; then
+    if dpkg -l | grep -qi "^ii.*zcode"; then
         echo "OK: ZCode package installed"
     else
         echo "WARN: ZCode package not found in dpkg — .deb may use a different package name"
     fi
-' 2>&1 | while read -r line; do echo "  $line"; done
+' 2>&1 | while read -r line; do echo "  $line"; done || rc=${PIPESTATUS[0]}; }
+# The brace group above captures the proot-distro stage's exit status via
+# PIPESTATUS into `rc`, escaping errexit so the rest of the installer can
+# decide whether to continue or abort based on the real failure code.
+PROOT_INSTALL_RC=$rc
+if [ "$PROOT_INSTALL_RC" -ne 0 ]; then
+    warn "Debian proot install step exited with status $PROOT_INSTALL_RC (continuing)"
+fi
 
 # ── Step 5: Create launcher script ────────────────────────────────────────────
 info "Creating launcher..."
@@ -120,6 +127,7 @@ pulseaudio --start 2>/dev/null || true
 
 # Start Termux:X11 in background
 termux-x11 :0 &
+disown || true
 sleep 2
 
 # Launch ZCode inside Debian proot with DISPLAY

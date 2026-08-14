@@ -80,16 +80,17 @@ print_env_report() {
 
 # ── Compute mobile-optimized settings ────────────────────────────────────────
 compute_mobile_config() {
-    # Scale factor based on screen DPI
-    #  160dpi → 1.0,  240dpi → 1.5,  320dpi → 2.0,  480dpi → 3.0
-    SCALE_FACTOR="$(echo "scale=2; $SCREEN_DPI / 160" | bc 2>/dev/null || echo "2.0")"
-    
-    # Clamp scale to reasonable range for code editing
-    if (( $(echo "$SCALE_FACTOR < 1.0" | bc -l 2>/dev/null || echo 0) )); then
-        SCALE_FACTOR="1.0"
-    elif (( $(echo "$SCALE_FACTOR > 3.0" | bc -l 2>/dev/null || echo 0) )); then
-        SCALE_FACTOR="3.0"
-    fi
+    # Scale factor based on screen DPI.
+    #  160dpi → 1.00,  240dpi → 1.50,  320dpi → 2.00,  480dpi → 3.00
+    # Use awk instead of bc — bc is not part of the base Termux install and
+    # the project must not depend on it. Clamp to [1.00, 3.00] in the same step.
+    SCALE_FACTOR="$(awk -v dpi="${SCREEN_DPI:-0}" 'BEGIN {
+        if (dpi <= 0) { print "2.00"; exit }
+        s = dpi / 160.0
+        if (s < 1.0) s = 1.0
+        if (s > 3.0) s = 3.0
+        printf "%.2f\n", s
+    }')"
     
     # Memory-based config
     if [[ "$TOTAL_RAM_MB" -ge 8000 ]]; then
