@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Background: rounded square with gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0D1117"/>
+      <stop offset="0.5" stop-color="#161B22"/>
+      <stop offset="1" stop-color="#1C2333"/>
+    </linearGradient>
+    <linearGradient id="phoneGrad" x1="128" y1="80" x2="384" y2="432" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2D5BFF"/>
+      <stop offset="0.5" stop-color="#7B4DFF"/>
+      <stop offset="1" stop-color="#C13FF6"/>
+    </linearGradient>
+    <linearGradient id="codeGrad" x1="200" y1="180" x2="312" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00F0B5"/>
+      <stop offset="1" stop-color="#00C896"/>
+    </linearGradient>
+    <linearGradient id="sparkGrad" x1="340" y1="120" x2="400" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFD60A"/>
+      <stop offset="1" stop-color="#FF9F0A"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Rounded rect background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.04" stroke="#58A6FF" stroke-width="1">
+    <line x1="0" y1="128" x2="512" y2="128"/>
+    <line x1="0" y1="256" x2="512" y2="256"/>
+    <line x1="0" y1="384" x2="512" y2="384"/>
+    <line x1="128" y1="0" x2="128" y2="512"/>
+    <line x1="256" y1="0" x2="256" y2="512"/>
+    <line x1="384" y1="0" x2="384" y2="512"/>
+  </g>
+
+  <!-- Phone outline with gradient stroke -->
+  <rect x="148" y="96" width="216" height="320" rx="32" 
+        stroke="url(#phoneGrad)" stroke-width="4" fill="none" opacity="0.9"/>
+  
+  <!-- Phone screen area -->
+  <rect x="164" y="128" width="184" height="256" rx="8" 
+        fill="#0D1117" opacity="0.6"/>
+
+  <!-- Phone notch -->
+  <rect x="232" y="104" width="48" height="8" rx="4" fill="url(#phoneGrad)" opacity="0.6"/>
+
+  <!-- Home indicator -->
+  <rect x="226" y="404" width="60" height="4" rx="2" fill="url(#phoneGrad)" opacity="0.4"/>
+
+  <!-- Terminal/code content inside phone -->
+  <g filter="url(#glow2)">
+    <!-- Terminal window dots -->
+    <circle cx="184" cy="148" r="4" fill="#FF5F57"/>
+    <circle cx="200" cy="148" r="4" fill="#FEBC2E"/>
+    <circle cx="216" cy="148" r="4" fill="#28C840"/>
+
+    <!-- Code lines — left bracket -->
+    <path d="M 196 180 L 188 196 L 196 212" 
+          stroke="url(#codeGrad)" stroke-width="3.5" stroke-linecap="round" 
+          stroke-linejoin="round" fill="none"/>
+
+    <!-- Code lines — content -->
+    <rect x="208" y="188" width="72" height="4" rx="2" fill="#58A6FF" opacity="0.8"/>
+    <rect x="208" y="200" width="56" height="4" rx="2" fill="#C13FF6" opacity="0.7"/>
+    <rect x="216" y="212" width="48" height="4" rx="2" fill="#00F0B5" opacity="0.6"/>
+
+    <!-- Code lines — right bracket -->
+    <path d="M 296 226 L 304 242 L 296 258" 
+          stroke="url(#codeGrad)" stroke-width="3.5" stroke-linecap="round" 
+          stroke-linejoin="round" fill="none"/>
+
+    <!-- Function/indent lines -->
+    <rect x="188" y="238" width="80" height="4" rx="2" fill="#7B4DFF" opacity="0.5"/>
+    <rect x="196" y="250" width="64" height="4" rx="2" fill="#58A6FF" opacity="0.4"/>
+
+    <!-- AI prompt line with cursor -->
+    <rect x="188" y="276" width="32" height="5" rx="2" fill="#FFD60A" opacity="0.9"/>
+    <rect x="226" y="276" width="48" height="5" rx="2" fill="#E6EDF3" opacity="0.5"/>
+    <!-- Blinking cursor -->
+    <rect x="280" y="274" width="3" height="9" rx="1" fill="#00F0B5">
+      <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- Output/response lines -->
+    <rect x="188" y="296" width="100" height="4" rx="2" fill="#00F0B5" opacity="0.4"/>
+    <rect x="196" y="308" width="72" height="4" rx="2" fill="#58A6FF" opacity="0.3"/>
+  </g>
+
+  <!-- AI Spark — top right corner of phone, overlapping -->
+  <g filter="url(#glow)">
+    <!-- 4-point star / spark -->
+    <path d="M 372 108 
+             L 378 126 L 396 132 L 378 138 L 372 156 
+             L 366 138 L 348 132 L 366 126 Z" 
+          fill="url(#sparkGrad)"/>
+    <!-- Small spark -->
+    <path d="M 396 92 L 399 100 L 407 103 L 399 106 L 396 114 L 393 106 L 385 103 L 393 100 Z" 
+          fill="#FFD60A" opacity="0.7"/>
+  </g>
+
+  <!-- Terminal prompt symbol at bottom -->
+  <g opacity="0.85" filter="url(#glow2)">
+    <text x="200" y="362" font-family="monospace" font-size="20" font-weight="bold" 
+          fill="url(#codeGrad)">$</text>
+    <rect x="216" y="350" width="56" height="4" rx="2" fill="#E6EDF3" opacity="0.6"/>
+  </g>
+
+  <!-- "Z" badge — bottom right, overlapping phone corner -->
+  <g filter="url(#glow)">
+    <circle cx="384" cy="384" r="40" fill="#0D1117" stroke="url(#phoneGrad)" stroke-width="3"/>
+    <text x="384" y="396" font-family="system-ui, -apple-system, sans-serif" 
+          font-size="36" font-weight="800" fill="url(#codeGrad)" 
+          text-anchor="middle">Z</text>
+  </g>
+</svg>

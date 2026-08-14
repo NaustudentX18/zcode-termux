@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0D1117"/>
+      <stop offset="1" stop-color="#1C2333"/>
+    </linearGradient>
+    <linearGradient id="phone" x1="32" y1="24" x2="96" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2D5BFF"/>
+      <stop offset="1" stop-color="#C13FF6"/>
+    </linearGradient>
+    <linearGradient id="code" x1="48" y1="44" x2="80" y2="84" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00F0B5"/>
+      <stop offset="1" stop-color="#00C896"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <rect x="40" y="28" width="48" height="72" rx="14" stroke="url(#phone)" stroke-width="2.5" fill="none"/>
+  <path d="M 54 52 L 50 60 L 54 68" stroke="url(#code)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="60" y="57" width="18" height="2" rx="1" fill="#58A6FF" opacity="0.7"/>
+  <rect x="60" y="63" width="14" height="2" rx="1" fill="#C13FF6" opacity="0.6"/>
+  <path d="M 74 70 L 78 78 L 74 86" stroke="url(#code)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="100" cy="40" r="6" fill="#FFD60A"/>
+  <circle cx="96" cy="96" r="16" fill="#0D1117" stroke="url(#phone)" stroke-width="2"/>
+  <text x="96" y="101" font-family="system-ui, sans-serif" font-size="14" font-weight="800" fill="url(#code)" text-anchor="middle">Z</text>
+</svg>

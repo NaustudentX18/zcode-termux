@@ -1,0 +1,150 @@
+/* ZCode Mobile Touch Optimization — injected via Electron --custom-css-path */
+:root {
+    --zcode-touch-target: 44px;
+    --zcode-touch-gap: 8px;
+    --zcode-scroll-width: 16px;
+    --zcode-font-scale: 1.15;
+}
+
+/* Increase all interactive element sizes */
+button,
+.monaco-button,
+.action-item,
+.toolbar .action-label,
+.activity-bar .action-item,
+.activity-bar .action-label,
+.tab,
+.tabs-container,
+.title-actions .action-item {
+    min-height: var(--zcode-touch-target) !important;
+    min-width: var(--zcode-touch-target) !important;
+    padding: 8px 12px !important;
+}
+
+/* Sidebar items — taller for touch */
+.explorer-item,
+.tree-item,
+.file-item,
+.folder-item,
+.tree-view .monaco-list-row {
+    min-height: 36px !important;
+    line-height: 36px !important;
+}
+
+/* Scrollbars — wider for touch dragging */
+.scrollbar .slider,
+.monaco-scrollable-element .scrollbar .slider {
+    width: var(--zcode-scroll-width) !important;
+    min-height: 40px !important;
+}
+
+/* Editor content — slightly larger */
+.monaco-editor .lines-content,
+.monaco-editor .view-lines,
+.monaco-editor .margin-view-overlays {
+    font-size: calc(14px * var(--zcode-font-scale)) !important;
+    line-height: calc(20px * var(--zcode-font-scale)) !important;
+}
+
+/* Terminal — larger for touch typing */
+.terminal,
+.xterm-viewport,
+.xterm-screen {
+    font-size: calc(13px * var(--zcode-font-scale)) !important;
+}
+
+/* Tabs — wider, easier to tap */
+.tabs-container .tab {
+    min-width: 120px !important;
+    padding: 8px 16px !important;
+}
+
+/* Status bar — taller */
+.statusbar,
+.status-bar {
+    height: 28px !important;
+    line-height: 28px !important;
+}
+
+/* Activity bar — wider for thumb access */
+.activity-bar {
+    width: 56px !important;
+}
+.activity-bar .action-item {
+    margin: 4px 0 !important;
+}
+
+/* Command palette — larger, full-width on mobile */
+.quick-input-widget,
+.quick-input-container {
+    max-width: 95vw !important;
+    font-size: 16px !important;
+}
+
+/* Dialogs — center and enlarge */
+.dialog,
+.message-dialog,
+.confirm-dialog {
+    min-width: 80vw !important;
+    font-size: 16px !important;
+}
+
+/* Context menu — larger items */
+.context-view .monaco-menu,
+.context-menu .monaco-menu {
+    font-size: 15px !important;
+}
+.context-view .monaco-menu .action-item,
+.context-menu .monaco-menu .action-item {
+    min-height: 40px !important;
+}
+
+/* Suggestions — larger for touch selection */
+.suggest-widget,
+.editor-widget .suggest-widget {
+    font-size: 15px !important;
+}
+.suggest-widget .monaco-list-row {
+    min-height: 36px !important;
+}
+
+/* Enable smooth scrolling for touch */
+.monaco-editor .view-lines {
+    scroll-behavior: smooth;
+}
+
+/* Prevent text selection on UI chrome */
+.activity-bar,
+.sidebar,
+.status-bar,
+.titlebar,
+.tab,
+.toolbar,
+.action-bar,
+.tabs-container {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Enable pinch zoom on the whole window */
+body {
+    touch-action: pan-x pan-y pinch-zoom;
+}
+
+/* Notification toasts — larger, dismissible easily */
+.notifications-toasts .notification-toast {
+    min-height: 60px !important;
+    font-size: 15px !important;
+}
+
+/* ZCode AI panel — mobile layout */
+.zcode-agent-panel,
+.zcode-chat-panel {
+    font-size: 15px !important;
+}
+.zcode-agent-panel .input-area textarea,
+.zcode-chat-panel .input-area textarea {
+    min-height: 60px !important;
+    font-size: 16px !important;
+}
