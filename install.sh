@@ -52,7 +52,7 @@ ok "Termux packages installed"
 
 # ── Step 2: Create Debian proot environment ────────────────────────────────────
 info "Setting up Debian proot environment..."
-if [ ! -d "$PREFIX/var/lib/proot-distro/installed-rootfs/debian" ]; then
+if ! proot-distro login debian -- true 2>/dev/null; then
     info "Installing Debian (this takes a minute)..."
     proot-distro install debian
 fi
