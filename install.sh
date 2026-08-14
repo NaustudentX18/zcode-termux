@@ -52,7 +52,7 @@ ok "Termux packages installed"
 
 # ── Step 2: Create Debian proot environment ────────────────────────────────────
 info "Setting up Debian proot environment..."
-if ! proot-distro list | grep -q "^\s*\* debian$"; then
+if ! proot-distro list | grep -qE '^[[:space:]]*\* debian$'; then
     info "Installing Debian (this takes a minute)..."
     proot-distro install debian
 fi
