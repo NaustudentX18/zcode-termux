@@ -74,31 +74,34 @@ info "Installing ZCode .deb + Electron dependencies in Debian proot..."
 DEB_BASENAME="$(basename "$DEB_FILE")"
 { rc=0; proot-distro login debian -- bash -c '
     set -e
-    # Install the .deb (ignore dep errors first pass)
-    dpkg -i "/root/'"$DEB_BASENAME"'" 2>/dev/null || true
+    # Install the .deb (may fail due to missing deps, that is OK, we fix below)
+    dpkg -i "/root/'"$DEB_BASENAME"'" || true
 
     # Update apt and fix broken deps
     apt-get update -y
-    apt-get install -y -f 2>/dev/null || true
+    apt-get install -y -f || true
 
     # Install Electron runtime dependencies (including libuuid1 required by zcode.deb)
     apt-get install -y \
         libgtk-3-0 libnotify4 libnss3 libnss3-tools libxss1 libxtst6 \
         xdg-utils libatspi2.0-0 libdrm2 libgbm1 libasound2 libuuid1 \
         libappindicator3-1 libsecret-1-0 desktop-file-utils \
-        libxcb-dri3-0 libxshmfence1 fonts-liberation 2>/dev/null || true
+        libxcb-dri3-0 libxshmfence1 fonts-liberation || true
 
     # Re-run dpkg now that all deps should be satisfied
-    dpkg -i "/root/'"$DEB_BASENAME"'" 2>/dev/null || true
+    dpkg -i "/root/'"$DEB_BASENAME"'" || true
 
     # Verify install — check both dpkg status and binary existence
     if [ -x /opt/ZCode/zcode ]; then
         echo "OK: ZCode binary found at /opt/ZCode/zcode"
-    elif dpkg -l 2>/dev/null | grep -qi "^ii.*zcode"; then
+    elif dpkg -l | grep -qi "^ii.*zcode"; then
         echo "OK: ZCode package installed"
     else
         echo "WARN: ZCode binary not found at /opt/ZCode/zcode"
-        echo "  Try: dpkg -l | grep zcode  OR  ls /opt/ZCode/"
+        echo "  dpkg status:"
+        dpkg -l | grep -i zcode || echo "    (zcode not in dpkg database)"
+        echo "  /opt/ZCode/ contents:"
+        ls -la /opt/ZCode/ 2>/dev/null || echo "    (directory does not exist)"
     fi
 ' 2>&1 | while read -r line; do echo "  $line"; done || rc=${PIPESTATUS[0]}; }
 # The brace group above captures the proot-distro stage's exit status via
