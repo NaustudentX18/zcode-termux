@@ -19,7 +19,7 @@ set -euo pipefail
 ZCODE_VERSION="3.7.7"
 ZCODE_DEB_URL="https://cdn-zcode.z.ai/zcode/electron/releases/${ZCODE_VERSION}/linux-arm64/ZCode-${ZCODE_VERSION}-linux-arm64.deb"
 INSTALL_DIR="$HOME/zcode-install"
-DEB_FILE="/tmp/zcode-${ZCODE_VERSION}-arm64.deb"
+DEB_FILE="$HOME/zcode-${ZCODE_VERSION}-arm64.deb"
 
 # Colors
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'
@@ -67,19 +67,15 @@ else
 fi
 ok "Downloaded: $DEB_FILE ($(du -h "$DEB_FILE" | cut -f1))"
 
-# ── Step 4: Copy .deb into proot, then install ─────────────────────────────────
-info "Copying .deb into Debian proot..."
-# proot-distro maps Termux /tmp to the guest, but to be safe we copy explicitly
-proot-distro login debian -- cp "$DEB_FILE" /tmp/zcode.deb 2>/dev/null || {
-    # Fallback: use proot-distro's bind mount path
-    cp "$DEB_FILE" "$PREFIX/var/lib/proot-distro/installed-rootfs/debian/tmp/zcode.deb" 2>/dev/null || true
-}
-
+# ── Step 4: Install ZCode .deb + Electron deps in proot ───────────────────────
+# proot-distro login binds Termux $HOME → /root inside the container,
+# so the .deb downloaded to $HOME is already visible at /root/ — no copy needed.
 info "Installing ZCode .deb + Electron dependencies in Debian proot..."
+DEB_BASENAME="$(basename "$DEB_FILE")"
 { rc=0; proot-distro login debian -- bash -c '
     set -e
     # Install the .deb (ignore dep errors first pass)
-    dpkg -i /tmp/zcode.deb 2>/dev/null || true
+    dpkg -i "/root/'"$DEB_BASENAME"'" 2>/dev/null || true
 
     # Update apt and fix broken deps
     apt-get update -y
